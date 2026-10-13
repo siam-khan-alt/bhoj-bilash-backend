@@ -3,7 +3,7 @@
 from .base import *  # noqa
 
 DEBUG = True
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "testserver"]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
