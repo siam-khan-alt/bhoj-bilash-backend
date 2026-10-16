@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -74,15 +75,17 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database — PostgreSQL, credentials from .env (never hardcoded)
-
+# Neon cloud host hole auto SSL (neon.tech require kore, local-e lage na).
+_DB_HOST = env("DB_HOST", "localhost")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": env("DB_NAME", "bhojbilash"),
         "USER": env("DB_USER", "bhojbilash_user"),
         "PASSWORD": env("DB_PASSWORD", "changeme"),
-        "HOST": env("DB_HOST", "localhost"),
+        "HOST": _DB_HOST,
         "PORT": env("DB_PORT", "5432"),
+        **({"OPTIONS": {"sslmode": "require"}} if "neon.tech" in _DB_HOST else {}),
     }
 }
 
@@ -126,5 +129,19 @@ USE_I18N = True
 USE_TZ = True
 
 
+# CORS — dev default localhost:3000, prod override via CORS_ALLOWED_ORIGINS env (comma-separated).
+# Never use "*" with credentials — whitelist only (Dhap 6 security pass).
+CORS_ALLOWED_ORIGINS = [
+    h.strip()
+    for h in env("CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
+    if h.strip()
+]
+CORS_ALLOW_CREDENTIALS = True
+
+
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
