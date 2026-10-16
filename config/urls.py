@@ -7,4 +7,5 @@ urlpatterns = [
     path("api/", include("menu.urls")),
     path("api/", include("orders.urls")),
     path("api/", include("khata.urls")),
+    path("api/", include("settingsplus.urls")),
 ]

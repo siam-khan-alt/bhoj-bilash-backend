@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "menu",
     "orders",
     "khata",
+    "settingsplus",
 ]
 
 MIDDLEWARE = [
