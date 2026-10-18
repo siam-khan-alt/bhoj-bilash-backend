@@ -13,12 +13,12 @@ cp .env.example .env   # DB_PASSWORD + SECRET_KEY bosao
 createdb -O bhojbilash_user bhojbilash   # postgres superuser hisebe, 1 bar
 venv/bin/python manage.py migrate
 venv/bin/python manage.py seed_users      # admin@test.com/admin123 + cashier@test.com/cashier123
-venv/bin/python manage.py seed_menu       # 29 foods + 2 packages (re-run safe)
+venv/bin/python manage.py seed_menu       # 28 foods + 2 packages (re-run safe)
 venv/bin/python manage.py seed_settingsplus
 venv/bin/python manage.py runserver       # :8000
 ```
 
-Frontend mock mode-e chole; real mode:
+Frontend connect (backend age chalate hobe):
 ```env
 # frontend/.env.local
 NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/api
@@ -26,7 +26,7 @@ NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/api
 
 ## Endpoints (Dhap 1-6)
 
-| Mock fn | Real | Access |
+| Frontend fn | Real | Access |
 |---|---|---|
 | `login()` | `POST /api/auth/login` → `{user, token}` | public |
 | `me()` | `GET /api/auth/me` | staff |
@@ -89,6 +89,6 @@ venv/bin/python manage.py test --settings=config.settings.test
 3. Env set koro: `SECRET_KEY, DEBUG=False, DB_*, ALLOWED_HOSTS=your-api.onrender.com, CORS_ALLOWED_ORIGINS=https://bhoj-bilash.vercel.app`.
 4. `migrate + seed_users + seed_menu + seed_settingsplus` 1 bar run koro.
 5. Frontend Vercel-e `NEXT_PUBLIC_API_URL=https://your-api.onrender.com/api` set kore rebuild.
-6. Swap check: `localStorage` purono `mock_*` key clear kore login → POS bill → hisab mile kina dekho.
+6. Smoke check: login → POS bill → hisab mile kina dekho (purono `mock_*` localStorage key thakle clear koro).
 
 Demo creds: `admin@test.com/admin123` (full), `cashier@test.com/cashier123` (POS + khata entry only).
